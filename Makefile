@@ -1,6 +1,6 @@
-.PHONY: all clean install download preprocess test
+.PHONY: all clean install download preprocess audit test
 
-all: install preprocess test
+all: install preprocess audit test
 
 install:
 	pip install -r requirements.txt
@@ -10,6 +10,9 @@ download:
 
 preprocess:
 	python -m src.preprocess
+
+audit:
+	python -m src.audit
 
 test:
 	pytest

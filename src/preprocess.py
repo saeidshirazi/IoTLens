@@ -1,4 +1,4 @@
-"""Preprocesses security-standard documents into a unified, traceable clause dataset."""
+"""Preprocesses security-standard documents into a unified, traceable clause dataset (Phase 1.5)."""
 
 from __future__ import annotations
 
@@ -23,11 +23,15 @@ OUTPUT_CSV = PROCESSED_DIR / "clauses.csv"
 CSV_COLUMNS = [
     "standard",
     "version",
+    "document_role",
+    "unit_type",
     "section",
     "clause_id",
     "page",
-    "original_text",
-    "normative",
+    "raw_text",
+    "clean_text",
+    "modality",
+    "is_requirement_candidate",
     "source_file",
 ]
 
@@ -41,19 +45,63 @@ NORMATIVE_REGEX = re.compile(
 class ClauseRecord:
     standard: str
     version: str
+    document_role: str
+    unit_type: str
     section: str
     clause_id: str
     page: str
-    original_text: str
-    normative: bool
+    raw_text: str
+    clean_text: str
+    modality: str
+    is_requirement_candidate: bool
     source_file: str
+
+    @property
+    def original_text(self) -> str:
+        """Backward-compatible alias for normalized text."""
+        return self.clean_text
+
+    @property
+    def normative(self) -> bool:
+        """Backward-compatible alias for normative requirement flag."""
+        return self.modality in ("SHALL", "MUST")
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
 
+def extract_modality(text: str) -> str:
+    """Extract requirement modality: SHALL | MUST | SHOULD | OTHER."""
+    if re.search(r"\b(shall|shall not)\b", text, re.IGNORECASE):
+        return "SHALL"
+    if re.search(r"\b(must|must not)\b", text, re.IGNORECASE):
+        return "MUST"
+    if re.search(r"\b(should|should not|recommend|recommended)\b", text, re.IGNORECASE):
+        return "SHOULD"
+    return "OTHER"
+
+
+def is_requirement_candidate_clause(
+    text: str, document_role: str, unit_type: str, modality: str
+) -> bool:
+    """Determine whether the unit is a candidate for product requirement classification.
+    
+    - Product requirements (unit_type == 'requirement'): True.
+    - Security capability statements (unit_type == 'capability'): True.
+    - Assessment test steps (unit_type == 'assessment_step', e.g. TS 103 701): False
+      because tester instructions are fundamentally distinct from product requirements.
+    """
+    if unit_type == "assessment_step" or document_role == "assessment":
+        return False
+    if unit_type in ("requirement", "capability"):
+        return True
+    if modality in ("SHALL", "MUST", "SHOULD"):
+        return True
+    return False
+
+
 def is_normative_text(text: str) -> bool:
-    """Check if the text contains normative requirement phrasing."""
+    """Check if text contains normative requirement phrasing."""
     return bool(NORMATIVE_REGEX.search(text))
 
 
@@ -157,17 +205,24 @@ def extract_etsi_en_303645(pdf_path: Path) -> List[ClauseRecord]:
                     collected.append(next_line)
                     cur_l_idx += 1
 
-                final_text = clean_text(" ".join(collected))
+                raw_val = "\n".join(collected)
+                clean_val = clean_text(" ".join(collected))
                 rel_path = str(pdf_path.relative_to(PROJECT_ROOT)) if pdf_path.is_relative_to(PROJECT_ROOT) else str(pdf_path)
+                mod = extract_modality(clean_val)
+                is_req = is_requirement_candidate_clause(clean_val, "requirement", "requirement", mod)
 
                 records.append(ClauseRecord(
                     standard="ETSI EN 303 645",
                     version="V3.1.3",
+                    document_role="requirement",
+                    unit_type="requirement",
                     section=current_section,
                     clause_id=clause_id,
                     page=str(page_num),
-                    original_text=final_text,
-                    normative=is_normative_text(final_text),
+                    raw_text=raw_val,
+                    clean_text=clean_val,
+                    modality=mod,
+                    is_requirement_candidate=is_req,
                     source_file=rel_path,
                 ))
 
@@ -250,18 +305,25 @@ def extract_etsi_ts_103701(pdf_path: Path) -> List[ClauseRecord]:
                     tu_lines.append(next_l)
                     i += 1
 
-                tu_text = clean_text(" ".join(tu_lines))
-                if is_normative_text(tu_text):
-                    records.append(ClauseRecord(
-                        standard="ETSI TS 103 701",
-                        version="V2.1.1",
-                        section=current_section,
-                        clause_id=f"{current_tc_id} {unit_letter})",
-                        page=str(page_num),
-                        original_text=tu_text,
-                        normative=True,
-                        source_file=rel_path,
-                    ))
+                raw_val = "\n".join(tu_lines)
+                clean_val = clean_text(" ".join(tu_lines))
+                mod = extract_modality(clean_val)
+                is_req = is_requirement_candidate_clause(clean_val, "assessment", "assessment_step", mod)
+
+                records.append(ClauseRecord(
+                    standard="ETSI TS 103 701",
+                    version="V2.1.1",
+                    document_role="assessment",
+                    unit_type="assessment_step",
+                    section=current_section,
+                    clause_id=f"{current_tc_id} {unit_letter})",
+                    page=str(page_num),
+                    raw_text=raw_val,
+                    clean_text=clean_val,
+                    modality=mod,
+                    is_requirement_candidate=is_req,
+                    source_file=rel_path,
+                ))
                 continue
             i += 1
 
@@ -302,15 +364,22 @@ def extract_nistir_8259a(pdf_path: Path) -> List[ClauseRecord]:
             m = elem_re.match(line)
             if m:
                 if current_elem_num > 0 and current_elem_lines:
-                    elem_text = clean_text(" ".join(current_elem_lines))
+                    raw_val = "\n".join(current_elem_lines)
+                    clean_val = clean_text(" ".join(current_elem_lines))
+                    mod = extract_modality(clean_val)
+                    is_req = is_requirement_candidate_clause(clean_val, "guidance", "capability", mod)
                     records.append(ClauseRecord(
                         standard="NISTIR 8259A",
                         version="Final",
+                        document_role="guidance",
+                        unit_type="capability",
                         section=f"Table 1: {cap_name}",
                         clause_id=f"{cap_name} - Element {current_elem_num}",
                         page=str(page_num),
-                        original_text=elem_text,
-                        normative=True,
+                        raw_text=raw_val,
+                        clean_text=clean_val,
+                        modality=mod,
+                        is_requirement_candidate=is_req,
                         source_file=rel_path,
                     ))
                 current_elem_num = int(m.group(1))
@@ -319,15 +388,22 @@ def extract_nistir_8259a(pdf_path: Path) -> List[ClauseRecord]:
                 # Stop reading element text when hitting Rationale, Note, or Examples
                 if any(line.startswith(stop) for stop in ["•", "Note:", "Rationale", "IoT Reference", "Device Cybersecurity", "Capability"]):
                     if current_elem_num > 0 and current_elem_lines:
-                        elem_text = clean_text(" ".join(current_elem_lines))
+                        raw_val = "\n".join(current_elem_lines)
+                        clean_val = clean_text(" ".join(current_elem_lines))
+                        mod = extract_modality(clean_val)
+                        is_req = is_requirement_candidate_clause(clean_val, "guidance", "capability", mod)
                         records.append(ClauseRecord(
                             standard="NISTIR 8259A",
                             version="Final",
+                            document_role="guidance",
+                            unit_type="capability",
                             section=f"Table 1: {cap_name}",
                             clause_id=f"{cap_name} - Element {current_elem_num}",
                             page=str(page_num),
-                            original_text=elem_text,
-                            normative=True,
+                            raw_text=raw_val,
+                            clean_text=clean_val,
+                            modality=mod,
+                            is_requirement_candidate=is_req,
                             source_file=rel_path,
                         ))
                         current_elem_num = 0
@@ -336,15 +412,22 @@ def extract_nistir_8259a(pdf_path: Path) -> List[ClauseRecord]:
                 current_elem_lines.append(line)
 
         if current_elem_num > 0 and current_elem_lines:
-            elem_text = clean_text(" ".join(current_elem_lines))
+            raw_val = "\n".join(current_elem_lines)
+            clean_val = clean_text(" ".join(current_elem_lines))
+            mod = extract_modality(clean_val)
+            is_req = is_requirement_candidate_clause(clean_val, "guidance", "capability", mod)
             records.append(ClauseRecord(
                 standard="NISTIR 8259A",
                 version="Final",
+                document_role="guidance",
+                unit_type="capability",
                 section=f"Table 1: {cap_name}",
                 clause_id=f"{cap_name} - Element {current_elem_num}",
                 page=str(page_num),
-                original_text=elem_text,
-                normative=True,
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=is_req,
                 source_file=rel_path,
             ))
 
@@ -389,15 +472,22 @@ def extract_nistir_8259b(pdf_path: Path) -> List[ClauseRecord]:
             m = elem_re.match(line)
             if m:
                 if current_elem_num > 0 and current_elem_lines:
-                    elem_text = clean_text(" ".join(current_elem_lines))
+                    raw_val = "\n".join(current_elem_lines)
+                    clean_val = clean_text(" ".join(current_elem_lines))
+                    mod = extract_modality(clean_val)
+                    is_req = is_requirement_candidate_clause(clean_val, "guidance", "capability", mod)
                     records.append(ClauseRecord(
                         standard="NISTIR 8259B",
                         version="Final",
+                        document_role="guidance",
+                        unit_type="capability",
                         section=f"Table 1: {cap_name}",
                         clause_id=f"{cap_name} - Element {current_elem_num}",
                         page=str(start_page),
-                        original_text=elem_text,
-                        normative=True,
+                        raw_text=raw_val,
+                        clean_text=clean_val,
+                        modality=mod,
+                        is_requirement_candidate=is_req,
                         source_file=rel_path,
                     ))
                 current_elem_num = int(m.group(1))
@@ -406,15 +496,22 @@ def extract_nistir_8259b(pdf_path: Path) -> List[ClauseRecord]:
             elif current_elem_num > 0:
                 if any(line.startswith(stop) for stop in ["•", "Note:", "Rationale", "IoT Reference", "Non-Technical", "Supporting", "NISTIR 8259B"]):
                     if current_elem_num > 0 and current_elem_lines:
-                        elem_text = clean_text(" ".join(current_elem_lines))
+                        raw_val = "\n".join(current_elem_lines)
+                        clean_val = clean_text(" ".join(current_elem_lines))
+                        mod = extract_modality(clean_val)
+                        is_req = is_requirement_candidate_clause(clean_val, "guidance", "capability", mod)
                         records.append(ClauseRecord(
                             standard="NISTIR 8259B",
                             version="Final",
+                            document_role="guidance",
+                            unit_type="capability",
                             section=f"Table 1: {cap_name}",
                             clause_id=f"{cap_name} - Element {current_elem_num}",
                             page=str(start_page),
-                            original_text=elem_text,
-                            normative=True,
+                            raw_text=raw_val,
+                            clean_text=clean_val,
+                            modality=mod,
+                            is_requirement_candidate=is_req,
                             source_file=rel_path,
                         ))
                         current_elem_num = 0
@@ -423,15 +520,22 @@ def extract_nistir_8259b(pdf_path: Path) -> List[ClauseRecord]:
                 current_elem_lines.append(line)
 
         if current_elem_num > 0 and current_elem_lines:
-            elem_text = clean_text(" ".join(current_elem_lines))
+            raw_val = "\n".join(current_elem_lines)
+            clean_val = clean_text(" ".join(current_elem_lines))
+            mod = extract_modality(clean_val)
+            is_req = is_requirement_candidate_clause(clean_val, "guidance", "capability", mod)
             records.append(ClauseRecord(
                 standard="NISTIR 8259B",
                 version="Final",
+                document_role="guidance",
+                unit_type="capability",
                 section=f"Table 1: {cap_name}",
                 clause_id=f"{cap_name} - Element {current_elem_num}",
                 page=str(start_page),
-                original_text=elem_text,
-                normative=True,
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=is_req,
                 source_file=rel_path,
             ))
 
@@ -454,15 +558,21 @@ def extract_cra_regulation(html_path: Path) -> List[ClauseRecord]:
     if art13:
         for p in art13.find_all("p", id=re.compile(r"^art-13-\d+")):
             cid = p["id"].replace("art-13-", "Art. 13(") + ")"
-            txt = clean_text(p.get_text())
+            raw_val = p.get_text()
+            clean_val = clean_text(raw_val)
+            mod = extract_modality(clean_val)
             records.append(ClauseRecord(
                 standard="EU CRA",
                 version="Regulation 2024/2847",
+                document_role="regulation",
+                unit_type="requirement",
                 section="Article 13 Obligations of manufacturers",
                 clause_id=cid,
                 page="",
-                original_text=txt,
-                normative=True,
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=True,
                 source_file=rel_path,
             ))
 
@@ -472,49 +582,71 @@ def extract_cra_regulation(html_path: Path) -> List[ClauseRecord]:
         # Paragraph 1
         p1 = annex1_p1.find("p", id="annex-I-1")
         if p1:
+            raw_val = p1.get_text()
+            clean_val = clean_text(raw_val)
+            mod = extract_modality(clean_val)
             records.append(ClauseRecord(
                 standard="EU CRA",
                 version="Regulation 2024/2847",
+                document_role="regulation",
+                unit_type="requirement",
                 section="Annex I Part I Essential cybersecurity requirements",
                 clause_id="Annex I, Part I, 1",
                 page="",
-                original_text=clean_text(p1.get_text()),
-                normative=True,
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=True,
                 source_file=rel_path,
             ))
 
         # Paragraph 2 lead-in and points (a) to (m) in strict DOM order
         p2 = annex1_p1.find("p", id="annex-I-2")
-        p2_leadin = clean_text(p2.get_text()) if p2 else ""
+        p2_leadin_raw = p2.get_text() if p2 else ""
+        p2_leadin = clean_text(p2_leadin_raw)
         p2_leadin = re.sub(r"^2\.\s*", "", p2_leadin).strip()
 
         for li in annex1_p1.find_all("li", id=re.compile(r"^annex-I-2-[a-z]")):
             letter = li["id"].replace("annex-I-2-", "")
             cid = f"Annex I, Part I, 2({letter})"
-            li_txt = clean_text(li.get_text())
-            full_txt = f"{p2_leadin} {li_txt}" if p2_leadin else li_txt
+            li_raw = li.get_text()
+            li_txt = clean_text(li_raw)
+            raw_val = f"{p2_leadin_raw}\n{li_raw}"
+            clean_val = f"{p2_leadin} {li_txt}" if p2_leadin else li_txt
+            mod = extract_modality(clean_val)
             records.append(ClauseRecord(
                 standard="EU CRA",
                 version="Regulation 2024/2847",
+                document_role="regulation",
+                unit_type="requirement",
                 section="Annex I Part I Essential cybersecurity requirements",
                 clause_id=cid,
                 page="",
-                original_text=full_txt,
-                normative=True,
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=True,
                 source_file=rel_path,
             ))
 
         # Paragraph 3
         p3 = annex1_p1.find("p", id="annex-I-3")
         if p3:
+            raw_val = p3.get_text()
+            clean_val = clean_text(raw_val)
+            mod = extract_modality(clean_val)
             records.append(ClauseRecord(
                 standard="EU CRA",
                 version="Regulation 2024/2847",
+                document_role="regulation",
+                unit_type="requirement",
                 section="Annex I Part I Essential cybersecurity requirements",
                 clause_id="Annex I, Part I, 3",
                 page="",
-                original_text=clean_text(p3.get_text()),
-                normative=True,
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=True,
                 source_file=rel_path,
             ))
 
@@ -522,19 +654,27 @@ def extract_cra_regulation(html_path: Path) -> List[ClauseRecord]:
     annex1_p2 = soup.find("section", id="annex-I-part-II")
     if annex1_p2:
         leadin_p = annex1_p2.find("p")
-        leadin_txt = clean_text(leadin_p.get_text()) if leadin_p else "Manufacturers of products with digital elements shall:"
+        leadin_raw = leadin_p.get_text() if leadin_p else "Manufacturers of products with digital elements shall:"
+        leadin_txt = clean_text(leadin_raw)
         for li in annex1_p2.find_all("li", id=re.compile(r"^annex-I-part-II-\d+")):
             cid = li["id"].replace("annex-I-part-II-", "Annex I, Part II, ")
-            item_txt = clean_text(li.get_text())
-            full_txt = f"{leadin_txt} {item_txt}"
+            item_raw = li.get_text()
+            item_txt = clean_text(item_raw)
+            raw_val = f"{leadin_raw}\n{item_raw}"
+            clean_val = f"{leadin_txt} {item_txt}"
+            mod = extract_modality(clean_val)
             records.append(ClauseRecord(
                 standard="EU CRA",
                 version="Regulation 2024/2847",
+                document_role="regulation",
+                unit_type="requirement",
                 section="Annex I Part II Vulnerability handling requirements",
                 clause_id=cid,
                 page="",
-                original_text=full_txt,
-                normative=True,
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=True,
                 source_file=rel_path,
             ))
 
@@ -542,19 +682,27 @@ def extract_cra_regulation(html_path: Path) -> List[ClauseRecord]:
     annex2 = soup.find("section", id="annex-II")
     if annex2:
         leadin_p = annex2.find("p")
-        leadin_txt = clean_text(leadin_p.get_text()) if leadin_p else "As a minimum, the product with digital elements shall be accompanied by:"
+        leadin_raw = leadin_p.get_text() if leadin_p else "As a minimum, the product with digital elements shall be accompanied by:"
+        leadin_txt = clean_text(leadin_raw)
         for li in annex2.find_all("li", id=re.compile(r"^annex-II-\d+")):
             cid = li["id"].replace("annex-II-", "Annex II, ")
-            item_txt = clean_text(li.get_text())
-            full_txt = f"{leadin_txt} {item_txt}"
+            item_raw = li.get_text()
+            item_txt = clean_text(item_raw)
+            raw_val = f"{leadin_raw}\n{item_raw}"
+            clean_val = f"{leadin_txt} {item_txt}"
+            mod = extract_modality(clean_val)
             records.append(ClauseRecord(
                 standard="EU CRA",
                 version="Regulation 2024/2847",
+                document_role="regulation",
+                unit_type="requirement",
                 section="Annex II Information and instructions to the user",
                 clause_id=cid,
                 page="",
-                original_text=full_txt,
-                normative=True,
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=True,
                 source_file=rel_path,
             ))
 
@@ -613,15 +761,22 @@ def extract_uk_psti(html_path: Path) -> List[ClauseRecord]:
                 parts.append(curr.get_text())
                 curr = curr.find_next_sibling()
 
-            clause_text = clean_text(" ".join(parts))
+            raw_val = "\n".join(parts)
+            clean_val = clean_text(" ".join(parts))
+            mod = extract_modality(clean_val)
+
             records.append(ClauseRecord(
                 standard="UK PSTI",
                 version="SI 2023/1007",
+                document_role="regulation",
+                unit_type="requirement",
                 section=f"{sched}: {sec_title}",
                 clause_id=f"{sched}, Paragraph {p_num}({sp_num})",
                 page="",
-                original_text=clause_text,
-                normative=is_normative_text(clause_text),
+                raw_text=raw_val,
+                clean_text=clean_val,
+                modality=mod,
+                is_requirement_candidate=True,
                 source_file=rel_path,
             ))
 
@@ -660,17 +815,23 @@ def extract_nist_catalog(catalog_dir: Path) -> List[ClauseRecord]:
                 # Exclude nested examples or non-requirement notes
                 if "Example" in raw_txt:
                     raw_txt = raw_txt.split("Example")[0]
-                txt = clean_text(raw_txt)
-                if any(txt.startswith(w) for w in ["Ability", "Document", "Educate", "Make customers", "Establish", "Maintain"]):
+                clean_txt = clean_text(raw_txt)
+                if any(clean_txt.startswith(w) for w in ["Ability", "Document", "Educate", "Make customers", "Establish", "Maintain"]):
                     item_idx += 1
+                    mod = extract_modality(clean_txt)
+                    is_req = is_requirement_candidate_clause(clean_txt, "guidance", "capability", mod)
                     records.append(ClauseRecord(
                         standard="NIST IoT Catalog",
                         version="Current Public",
+                        document_role="guidance",
+                        unit_type="capability",
                         section=f"Catalog: {current_h1}",
                         clause_id=f"{fname}-{item_idx}",
                         page="",
-                        original_text=txt,
-                        normative=is_normative_text(txt),
+                        raw_text=raw_txt,
+                        clean_text=clean_txt,
+                        modality=mod,
+                        is_requirement_candidate=is_req,
                         source_file=rel_path,
                     ))
 
@@ -730,10 +891,31 @@ def main() -> int:
     clauses = preprocess_all()
     print(f"\nPreprocessing complete. Total clauses extracted: {len(clauses)}")
     by_standard: Dict[str, int] = {}
+    by_unit_type: Dict[str, int] = {}
+    by_modality: Dict[str, int] = {}
+    req_candidates = 0
+
     for c in clauses:
         by_standard[c.standard] = by_standard.get(c.standard, 0) + 1
+        by_unit_type[c.unit_type] = by_unit_type.get(c.unit_type, 0) + 1
+        by_modality[c.modality] = by_modality.get(c.modality, 0) + 1
+        if c.is_requirement_candidate:
+            req_candidates += 1
+
+    print("\nBy Standard:")
     for std, count in sorted(by_standard.items()):
         print(f"  - {std}: {count} clauses")
+
+    print("\nBy Unit Type:")
+    for utype, count in sorted(by_unit_type.items()):
+        print(f"  - {utype}: {count}")
+
+    print("\nBy Modality:")
+    for mod, count in sorted(by_modality.items()):
+        print(f"  - {mod}: {count}")
+
+    print(f"\nRequirement Candidates (for C1-C5 classification): {req_candidates}")
+    print(f"Auxiliary Assessment Steps (TS 103 701): {len(clauses) - req_candidates}")
     return 0
 
 

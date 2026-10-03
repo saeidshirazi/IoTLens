@@ -67,10 +67,11 @@ class TestClausePreprocessing(unittest.TestCase):
         self.assertEqual(by_id["6-1"].page, "28")
         self.assertIn("personal data", by_id["6-1"].original_text)
 
-        # Check all are marked normative
+        # Check all are requirement candidates and have valid modalities (SHALL or SHOULD)
         for c in etsi_en_clauses:
-            self.assertTrue(c.normative, f"Provision {c.clause_id} unexpectedly marked non-normative")
-            self.assertTrue(c.original_text.strip(), f"Provision {c.clause_id} has empty text")
+            self.assertTrue(c.is_requirement_candidate, f"Provision {c.clause_id} unexpectedly marked non-candidate")
+            self.assertIn(c.modality, ("SHALL", "SHOULD"), f"Provision {c.clause_id} has unexpected modality: {c.modality}")
+            self.assertTrue(c.clean_text.strip(), f"Provision {c.clause_id} has empty text")
             self.assertTrue(c.page.isdigit(), f"Provision {c.clause_id} has non-numeric page: {c.page}")
 
     def test_multi_standard_coverage(self):
@@ -155,6 +156,49 @@ class TestClausePreprocessing(unittest.TestCase):
         self.assertIn("Schedule 2, Paragraph 1(2)", psti_cids)
         self.assertIn("Schedule 2, Paragraph 3(2)", psti_cids)
         self.assertIn("Schedule 2, Paragraph 3(4)", psti_cids)
+
+    def test_phase15_schema_and_unit_type_separation(self):
+        """Verify Phase 1.5 schema, raw/clean text preservation, unit types, and requirement candidate separation."""
+        expected_roles = {"requirement", "regulation", "assessment", "guidance"}
+        expected_unit_types = {"requirement", "capability", "assessment_step"}
+        expected_modalities = {"SHALL", "MUST", "SHOULD", "OTHER"}
+
+        req_candidates = [c for c in self.clauses if c.is_requirement_candidate]
+        assessment_steps = [c for c in self.clauses if c.unit_type == "assessment_step"]
+
+        # Exactly 370 requirement candidates (EN 303 645, CRA, PSTI, NISTIR 8259A/B, NIST Catalog)
+        self.assertEqual(len(req_candidates), 370, f"Expected 370 requirement candidates, got {len(req_candidates)}")
+        # Exactly 258 assessment steps from TS 103 701
+        self.assertEqual(len(assessment_steps), 258, f"Expected 258 assessment steps, got {len(assessment_steps)}")
+
+        for c in self.clauses:
+            self.assertIn(c.document_role, expected_roles, f"Unexpected document_role: {c.document_role}")
+            self.assertIn(c.unit_type, expected_unit_types, f"Unexpected unit_type: {c.unit_type}")
+            self.assertIn(c.modality, expected_modalities, f"Unexpected modality: {c.modality}")
+            self.assertTrue(c.raw_text.strip(), f"Clause {c.clause_id} has empty raw_text")
+            self.assertTrue(c.clean_text.strip(), f"Clause {c.clause_id} has empty clean_text")
+
+            # TS 103 701 must be auxiliary assessment steps, NOT requirement candidates
+            if c.standard == "ETSI TS 103 701":
+                self.assertEqual(c.document_role, "assessment")
+                self.assertEqual(c.unit_type, "assessment_step")
+                self.assertFalse(c.is_requirement_candidate)
+            else:
+                self.assertTrue(c.is_requirement_candidate)
+
+    def test_extraction_quality_audit(self):
+        """Verify representative 131-clause audit passes with 100% boundary accuracy and 0 wrong IDs."""
+        from src.audit import run_audit
+        audit_results = run_audit()
+        self.assertGreaterEqual(len(audit_results), 100)
+
+        for r in audit_results:
+            self.assertEqual(r["correct_boundary"], "True", f"Boundary failure in {r['clause_id']}")
+            self.assertEqual(r["missing_text"], "False", f"Missing text failure in {r['clause_id']}")
+            self.assertEqual(r["extra_text"], "False", f"Extra text failure in {r['clause_id']}")
+            self.assertEqual(r["wrong_id"], "False", f"Wrong ID failure in {r['clause_id']}")
+            self.assertEqual(r["wrong_inclusion"], "False", f"Wrong inclusion failure in {r['clause_id']}")
+            self.assertEqual(r["audit_status"], "PASS")
 
 
 if __name__ == "__main__":
