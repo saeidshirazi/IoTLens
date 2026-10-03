@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="nist-footer-bottom">
+<link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/toggle.css">
+	
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+      <script src="https://pages.nist.gov/nist-header-footer/js/jquery-1.9.0.min.js" type="text/javascript" defer="defer"></script>
+      <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+<header class="nist-header--minimal">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="/technical/logical/">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+     <!-- Google Analytics -->
+    <!--<script type="text/javascript" id="_fed_an_js_tag" src="http://www.nist.gov/js/federated-analytics.all.min.js?agency=NIST&subagency=mml&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script> -->
+    <!-- DAP Analytics -->
+    <script type="text/javascript" id="_fed_an_ua_tag"
+            src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOC&subagency=NIST&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+    </script>
+      
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/NISTStyle.css">
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/NISTPages.css">
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/navbar-links.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</header>
+
+<div id="navbar-links" style="position:absolute;top:4px;left:12.5%;" class="nist-links">
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://www.nist.gov/programs-projects/nist-cybersecurity-iot-program">NIST Cybersecurity for IoT Program</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="http://www.nist.gov/public_affairs/nandyou.cfm">About NIST</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov">usnistgov on GitHub</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov/IoT-Device-Cybersecurity-Requirement-Catalogs">IoT Catalogs on GitHub</a>
+    </div>
+
+	
+<div style="z-index:1;position:absolute;top:10px;right:1%;width:17.5%;">
+<input style="width:100%" type="text" id="search-input" placeholder="Search ...">
+<ul style="width:100%;background-color:#f8f8f8;border-style:solid;border-color:black;border-width:thin;" id="results-container"></ul>
+</div>
+<script src="https://unpkg.com/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js" type="text/javascript"></script>
+<script src="//unpkg.com/string-similarity/umd/string-similarity.min.js"></script>
+    <script type="text/javascript">
+
+            SimpleJekyllSearch({
+                searchInput: document.getElementById('search-input'),
+                resultsContainer: document.getElementById('results-container'),
+                json: '/IoT-Device-Cybersecurity-Requirement-Catalogs/search.json',
+                searchResultTemplate: '<li style="list-style:square;"><a style="font-size:16px;font-weight:bold;color:#0B3C5D" href="{url}" title="Search configuration">{title}</a></li>',
+                sortMiddleware: function(a, b) {
+
+                  var input = String(document.getElementById("search-input").value).toLowerCase();
+
+                  var astr = String(a.title) + ' ' + String(a.content);
+                  var bstr = String(b.title) + ' ' + String(b.content);
+
+                  astr.toLowerCase();
+                  bstr.toLowerCase();
+
+                  var freqOne = astr.split(input).length - 1;
+                  var freqTwo = bstr.split(input).length - 1;
+
+		  var compOne = stringSimilarity.compareTwoStrings(input, astr);
+                  var compTwo = stringSimilarity.compareTwoStrings(input, bstr);
+
+		  if(freqOne === freqTwo){
+                     return (compOne > compTwo ? -1 : 1);
+                  }
+                  else { 
+                     return (freqOne > freqTwo ? -1 : 1);
+                  }
+
+                },
+                noResultsText: 'No results found.',
+                limit: 8
+            })
+    </script>
+    <!--end search-->
+<nav style="top:50px;width:12.5%;height:100%" class="navbar navbar-default navbar-fixed-left" role="navigation">
+	<ul class="nav navbar-nav">
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/">Introduction</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="active">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/">Technical Capabilities</a>
+          
+          
+          
+        
+            
+            
+
+            
+
+            <ul class="subnav">
+            
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/identity/">Device Identification</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/configuration/">Device Configuration</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/protection/">Data Protection</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class="active"><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/logical/">Logical Access to Interfaces</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/update/">Software Update</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/state/">Cybersecurity State Awareness</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/security/">Device Security</a></li>
+              
+            
+          
+            </ul>
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/nontechnical/">Non-Technical Capabilities</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/informative_references/">NIST Informative References</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/FAQs/">FAQs</a>
+          
+          
+          
+          
+          
+        </li>
+      
+      
+      
+  </ul>
+
+</nav>
+
+<body>
+	<div class="container">
+	  <div class="row">
+		<h1 id="logical-access-to-interfaces">Logical Access to Interfaces</h1>
+
+<p>Ability to require authentication to, and/or identification of, the IoT device, and to establish authentication and identification configuration and display requirements.</p>
+
+<h2 id="authentication-support">Authentication Support</h2>
+
+<p>Ability to support authentication methods.</p>
+
+<ul>
+  <li>Ability for the IoT device to require authentication prior to connecting to the device.</li>
+  <li>Ability for the IoT device to support and require appropriate authentication.
+    <ul>
+      <li>Ability for the IoT device to require authentication prior to connecting to the device.</li>
+      <li>Ability for the IoT device to support a second, or more, authentication method(s) through an out of band path such as:
+        <ul>
+          <li>Temporary passwords or other one-use logon credentials</li>
+          <li>Third-party credential checks</li>
+          <li>Biometrics</li>
+          <li>Text messages</li>
+          <li>Hard Tokens</li>
+          <li>Manufacturer proprietary method</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Ability for the IoT device to hide or mask authentication information during authentication process.</li>
+  <li>Ability for the IoT device to support a second, or more, authentication method(s) through an out-of-band path such as: Temporary passwords or other one-use credentials; Third-party credential checks; Biometrics; Text messages; Hard Tokens; etc.</li>
+</ul>
+
+<h2 id="authentication-configuration">Authentication Configuration</h2>
+
+<p>Ability to require, or not require, authentication to, and/or identification of, the IoT device, and to establish authentication and identification configuration and display requirements. Elements that may be necessary:</p>
+
+<ul>
+  <li>Ability to set and change authentication configurations, policies and limitations settings for the IoT device.
+    <ul>
+      <li>Ability to set the time period for how long the device will remain locked after an established configurable limit of unsuccessful login attempts has been met.</li>
+      <li>Ability to disable or lock access to the device after an established number of unsuccessful login attempts.</li>
+      <li>Ability to display and/or report the previous date and time of the last successful login authentication.</li>
+      <li>Ability to automatically disable accounts for the IoT device after an establish period of inactivity.
+        <ul>
+          <li>Ability to support automatic logout of inactive accounts after a configurable established time period.</li>
+          <li>Ability to support automatic removal of temporary, emergency and other special use accounts after an established time period.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Ability to authenticate external users and systems</li>
+  <li>Ability to revoke their access.</li>
+</ul>
+
+<h2 id="system-use-notification-support">System Use Notification Support</h2>
+
+<p>Ability to support system use notifications.</p>
+
+<ul>
+  <li>Ability to display to IoT device users an organizationally-defined system use notification message or banner prior to successful IoT device authentication. (e.g., the message or banner would provide privacy and security notices consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance).</li>
+  <li>Ability to create an organizationally-defined system use notification message or banner to be displayed on the IoT device.
+    <ul>
+      <li>Ability to edit an existing IoT device display.</li>
+      <li>Ability to establish the maximum size (in characters, bytes, etc.) of the available device display.</li>
+    </ul>
+  </li>
+  <li>Ability to keep the notification message or banner on the device screen until the device user actively acknowledges and agrees to the usage conditions.</li>
+</ul>
+
+<h2 id="authorization-support">Authorization Support</h2>
+
+<p>Ability to restrict all unauthorized interactions.</p>
+
+<ul>
+  <li>Ability to identify authorized users and processes.</li>
+  <li>Ability to differentiate between authorized and unauthorized users (physical and remote).</li>
+</ul>
+
+<h2 id="authentication--identity-management">Authentication &amp; Identity Management</h2>
+
+<p>Ability to establish access to the IoT device to perform organizationally-defined user actions without identification or authentication.</p>
+
+<h2 id="role-support--management">Role Support &amp; Management</h2>
+
+<p>Ability to establish unique, privileged, organization-wide, and other types of IoT device user accounts. Elements that may be necessary:</p>
+
+<ul>
+  <li>Ability to create unique IoT device user accounts.</li>
+  <li>Ability to assign roles to IoT device user accounts.</li>
+  <li>Ability to identify unique IoT device user accounts.</li>
+  <li>Ability to support a hierarchy of logical access privileges for the IoT device based on roles (e.g., admin, emergency, user, local, temporary, etc.).
+    <ul>
+      <li>Ability to establish user accounts to support role-based logical access privileges.</li>
+      <li>Ability to administer user accounts to support role-based logical access privileges.</li>
+      <li>Ability to use organizationally-defined roles to define each user account’s access and permitted device actions.</li>
+      <li>Ability to support multiple levels of user/process account functionality and roles for the IoT device.</li>
+    </ul>
+  </li>
+  <li>Ability to apply least privilege to user accounts (i.e., to ensure that the processes operate at privilege levels no higher than necessary to accomplish required functions).
+    <ul>
+      <li>Ability to create additional processes, roles (e.g., admin, emergency, temporary, etc.) and accounts as necessary to achieve least privilege.</li>
+      <li>Ability to apply least privilege settings within the device (i.e., to ensure that the processes operate at privilege levels no higher than necessary to accomplish required functions).</li>
+      <li>Ability to limit access to privileged device settings that are used to establish and administer authorization requirements.</li>
+      <li>Ability for authorized users to access privileged settings.</li>
+    </ul>
+  </li>
+  <li>Ability to support organizationally-defined actions for the IoT device.
+    <ul>
+      <li>Ability to create organizationally-defined accounts that support privileged roles with automated expiration conditions.</li>
+      <li>Ability to establish organizationally-defined user actions for accessing the IoT device and/or device interface.</li>
+      <li>Ability to enable automation and reporting of account management activities.
+        <ul>
+          <li>Ability to assign access to IoT device audit controls to specific roles or organizationally-defined personnel.</li>
+          <li>Ability to control access to IoT device audit data.</li>
+          <li>Ability to identify the user, process or device requesting access to the audit/accountability information (i.e., to ensure only authorized users and/or devices have access).</li>
+        </ul>
+      </li>
+      <li>Ability to establish conditions for shared/group accounts on the IoT device.</li>
+      <li>Ability to administer conditions for shared/group accounts on the IoT device.</li>
+      <li>Ability to restrict the use of shared/group accounts on the IoT device according to organizationally-defined conditions.</li>
+    </ul>
+  </li>
+  <li>Ability to implement dynamic access control approaches (e.g., service-oriented architectures) that rely on:
+    <ul>
+      <li>run-time access control decisions facilitated by dynamic privilege management.</li>
+      <li>organizationally-defined actions to access/use device.</li>
+    </ul>
+  </li>
+  <li>Ability to allow information sharing capabilities based upon the type and/or role of user attempting to share the information.</li>
+  <li>Ability to restrict access to IoT device software, hardware, and data based on user account roles, used with proper authentication of the identity of the user to determine type of authorization.</li>
+</ul>
+
+<h2 id="limitations-on-device-usage">Limitations on Device Usage</h2>
+
+<p>Ability to establish restrictions for how the device can be used. Elements that may be necessary:</p>
+
+<ul>
+  <li>Ability to establish pre-defined restrictions for information searches within the device.</li>
+  <li>Ability to establish limits on authorized concurrent device sessions for:
+    <ul>
+      <li>User accounts</li>
+      <li>Roles</li>
+      <li>Groups</li>
+      <li>Dates</li>
+      <li>Times</li>
+      <li>Locations</li>
+      <li>Manufacturer established parameters</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="external-connections">External Connections</h2>
+
+<p>Ability to support external connections. Elements that may be necessary:</p>
+
+<ul>
+  <li>Ability to securely interact with authorized external, third-party systems.</li>
+  <li>Ability to allow for the user/organization to establish the circumstances for when information sharing from the device and/or through the device interface will be allowed and prohibited.</li>
+  <li>Ability to establish automated information sharing to approved identified parties/entities.</li>
+  <li>Ability to identify when the external system meets the required security requirements for a connection.</li>
+  <li>Ability to establish secure communications with internal systems when the device is operating on external networks.</li>
+</ul>
+
+<h2 id="interface-control">Interface Control</h2>
+
+<p>Ability to establish controls for the connections made to the IoT device. Elements that may be necessary:</p>
+
+<ul>
+  <li>Ability to establish requirements for remote access to the IoT device and/or IoT device interface including:
+    <ul>
+      <li>Usage restrictions</li>
+      <li>Configuration requirements</li>
+      <li>Connection requirements</li>
+      <li>Manufacturer established requirement</li>
+    </ul>
+  </li>
+  <li>Ability to restrict use of IoT device components (e.g., ports, functions, microphones, video).</li>
+  <li>Ability to logically or physically disable any local and network interfaces that are not necessary for the core functionality of the device.</li>
+  <li>Ability to restrict updating actions to authorized entities.</li>
+  <li>Ability to restrict access to the cybersecurity state indicator to authorized entities.</li>
+  <li>Ability to restrict use of IoT device services.</li>
+  <li>Ability to enforce the established local and remote access requirements.</li>
+  <li>Ability to prevent external access to the IoT device management interface.</li>
+  <li>Ability to control the IoT device’s logical interface (e.g., locally or remotely).</li>
+  <li>Ability to change IoT device logical interface(s).</li>
+  <li>Ability to control device responses to device input.</li>
+  <li>Ability to control output from the device.</li>
+  <li>Ability to support wireless technologies needed by the organization (e.g., Microwave, Packet radio (UHF/VHF), Bluetooth, Manufacturer defined)</li>
+  <li>Ability to support communications technologies (including but not limited to):
+    <ul>
+      <li>IEEE 802.11</li>
+      <li>Bluetooth</li>
+      <li>Ethernet</li>
+      <li>Manufacturer defined</li>
+    </ul>
+  </li>
+  <li>Ability to establish and configure IoT device settings for wireless technologies including authentication protocols (e.g., EAP/TLS, PEAP).</li>
+</ul>
+
+	  </div>
+	</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a42c27b47a8c430e',t:'MTc5MDY5NzE0Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

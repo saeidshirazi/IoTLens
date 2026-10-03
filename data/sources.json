@@ -1,0 +1,86 @@
+[
+  {
+    "source_id": "ETSI_EN_303_645",
+    "title": "Cyber Security for Consumer Internet of Things: Baseline Requirements",
+    "family": "ETSI",
+    "version": "V3.1.3",
+    "role": "normative_requirements",
+    "url": "https://www.etsi.org/deliver/etsi_en/303600_303699/303645/03.01.03_60/en_303645v030103p.pdf",
+    "path": "data/raw/etsi/etsi_en_303645_v313.pdf",
+    "sha256": "ce3efec89e392064ad0f8c16082d49e219a5f0641e417fec8cb1da4f1765855c",
+    "status": "VALIDATED",
+    "details": "41 pages"
+  },
+  {
+    "source_id": "ETSI_TS_103_701",
+    "title": "Cyber Security for Consumer Internet of Things: Conformance Assessment of Baseline Requirements",
+    "family": "ETSI",
+    "version": "V2.1.1",
+    "role": "assessment_supervision",
+    "url": "https://www.etsi.org/deliver/etsi_ts/103700_103799/103701/02.01.01_60/ts_103701v020101p.pdf",
+    "path": "data/raw/etsi/etsi_ts_103701_v211.pdf",
+    "sha256": "25afe7ad6273bbf1df96522a1a6f94b6ba4308d01201bef6f1ed134e91c78797",
+    "status": "VALIDATED",
+    "details": "147 pages"
+  },
+  {
+    "source_id": "NISTIR_8259A",
+    "title": "IoT Device Cybersecurity Capability Core Baseline",
+    "family": "NIST",
+    "version": "Final",
+    "role": "technical_requirements",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf",
+    "path": "data/raw/nist/nistir_8259a.pdf",
+    "sha256": "b3b54b00b5ac3f3582a3e3fd17d3f25b18f848a51f113000b6489adbcce374b4",
+    "status": "VALIDATED",
+    "details": "23 pages"
+  },
+  {
+    "source_id": "NISTIR_8259B",
+    "title": "IoT Non-Technical Supporting Capability Core Baseline",
+    "family": "NIST",
+    "version": "Final",
+    "role": "nontechnical_requirements",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ir/2021/NIST.IR.8259B.pdf",
+    "path": "data/raw/nist/nistir_8259b.pdf",
+    "sha256": "81de5249627a4862f61ffbc91cb589db75aff02436ca5fad5b1b6b26f501b904",
+    "status": "VALIDATED",
+    "details": "21 pages"
+  },
+  {
+    "source_id": "NIST_CATALOG",
+    "title": "NIST IoT Device Cybersecurity Requirement/Capabilities Catalog",
+    "family": "NIST",
+    "version": "Current Public",
+    "role": "technical_capabilities_catalog",
+    "url": "https://pages.nist.gov/IoT-Device-Cybersecurity-Requirement-Catalogs/",
+    "path": "data/raw/nist/nist_iot_catalog.html",
+    "sha256": "0f23e91a1714870a5596efeee975904f1e9c85a0e54f2082cfa100bd83d1c9ee",
+    "status": "VALIDATED",
+    "details": "1771 characters"
+  },
+  {
+    "source_id": "CRA_REGULATION",
+    "title": "Regulation (EU) 2024/2847 \u2014 Cyber Resilience Act",
+    "family": "CRA",
+    "version": "Official Journal L, 2024/2847",
+    "role": "normative_requirements",
+    "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02024R2847-20241120",
+    "path": "data/raw/cra/cra_regulation_2024_2847.html",
+    "sha256": "942e4b810b484f0b53c942e22e64e468be015c60b72ce1f7581983b6a21347ec",
+    "status": "VALIDATED",
+    "details": "8359 characters"
+  },
+  {
+    "source_id": "UK_PSTI_2023",
+    "title": "Product Security and Telecommunications Infrastructure Regulations 2023 (SI 2023/1007)",
+    "family": "PSTI",
+    "version": "SI 2023 No. 1007",
+    "role": "normative_requirements",
+    "url": "https://www.legislation.gov.uk/uksi/2023/1007/made/data.htm",
+    "path": "data/raw/psti/uk_psti_2023_1007.html",
+    "sha256": "6c3e9b60d0afeea2eb1f7fc2030815ccafb22d080222c3730e915d9b667c0b9f",
+    "status": "VALIDATED",
+    "details": "29373 characters"
+  }
+]

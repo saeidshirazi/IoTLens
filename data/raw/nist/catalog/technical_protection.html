@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="nist-footer-bottom">
+<link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/toggle.css">
+	
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+      <script src="https://pages.nist.gov/nist-header-footer/js/jquery-1.9.0.min.js" type="text/javascript" defer="defer"></script>
+      <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+<header class="nist-header--minimal">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="/technical/protection/">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+     <!-- Google Analytics -->
+    <!--<script type="text/javascript" id="_fed_an_js_tag" src="http://www.nist.gov/js/federated-analytics.all.min.js?agency=NIST&subagency=mml&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script> -->
+    <!-- DAP Analytics -->
+    <script type="text/javascript" id="_fed_an_ua_tag"
+            src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOC&subagency=NIST&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+    </script>
+      
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/NISTStyle.css">
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/NISTPages.css">
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/navbar-links.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</header>
+
+<div id="navbar-links" style="position:absolute;top:4px;left:12.5%;" class="nist-links">
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://www.nist.gov/programs-projects/nist-cybersecurity-iot-program">NIST Cybersecurity for IoT Program</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="http://www.nist.gov/public_affairs/nandyou.cfm">About NIST</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov">usnistgov on GitHub</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov/IoT-Device-Cybersecurity-Requirement-Catalogs">IoT Catalogs on GitHub</a>
+    </div>
+
+	
+<div style="z-index:1;position:absolute;top:10px;right:1%;width:17.5%;">
+<input style="width:100%" type="text" id="search-input" placeholder="Search ...">
+<ul style="width:100%;background-color:#f8f8f8;border-style:solid;border-color:black;border-width:thin;" id="results-container"></ul>
+</div>
+<script src="https://unpkg.com/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js" type="text/javascript"></script>
+<script src="//unpkg.com/string-similarity/umd/string-similarity.min.js"></script>
+    <script type="text/javascript">
+
+            SimpleJekyllSearch({
+                searchInput: document.getElementById('search-input'),
+                resultsContainer: document.getElementById('results-container'),
+                json: '/IoT-Device-Cybersecurity-Requirement-Catalogs/search.json',
+                searchResultTemplate: '<li style="list-style:square;"><a style="font-size:16px;font-weight:bold;color:#0B3C5D" href="{url}" title="Search configuration">{title}</a></li>',
+                sortMiddleware: function(a, b) {
+
+                  var input = String(document.getElementById("search-input").value).toLowerCase();
+
+                  var astr = String(a.title) + ' ' + String(a.content);
+                  var bstr = String(b.title) + ' ' + String(b.content);
+
+                  astr.toLowerCase();
+                  bstr.toLowerCase();
+
+                  var freqOne = astr.split(input).length - 1;
+                  var freqTwo = bstr.split(input).length - 1;
+
+		  var compOne = stringSimilarity.compareTwoStrings(input, astr);
+                  var compTwo = stringSimilarity.compareTwoStrings(input, bstr);
+
+		  if(freqOne === freqTwo){
+                     return (compOne > compTwo ? -1 : 1);
+                  }
+                  else { 
+                     return (freqOne > freqTwo ? -1 : 1);
+                  }
+
+                },
+                noResultsText: 'No results found.',
+                limit: 8
+            })
+    </script>
+    <!--end search-->
+<nav style="top:50px;width:12.5%;height:100%" class="navbar navbar-default navbar-fixed-left" role="navigation">
+	<ul class="nav navbar-nav">
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/">Introduction</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="active">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/">Technical Capabilities</a>
+          
+          
+          
+        
+            
+            
+
+            
+
+            <ul class="subnav">
+            
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/identity/">Device Identification</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/configuration/">Device Configuration</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class="active"><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/protection/">Data Protection</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/logical/">Logical Access to Interfaces</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/update/">Software Update</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/state/">Cybersecurity State Awareness</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/security/">Device Security</a></li>
+              
+            
+          
+            </ul>
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/nontechnical/">Non-Technical Capabilities</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/informative_references/">NIST Informative References</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/FAQs/">FAQs</a>
+          
+          
+          
+          
+          
+        </li>
+      
+      
+      
+  </ul>
+
+</nav>
+
+<body>
+	<div class="container">
+	  <div class="row">
+		<h1 id="data-protection">Data Protection</h1>
+
+<p>The capability to protect IoT device data to meet organizational requirements.</p>
+
+<h2 id="cryptography-capabilities-and-support">Cryptography Capabilities and Support</h2>
+
+<p>Ability for the IoT device to use cryptography for data protection. Elements that may be necessary:</p>
+
+<ul>
+  <li>Ability to execute cryptographic mechanisms of appropriate strength and performance.</li>
+  <li>Ability to obtain and validate certificates.</li>
+  <li>Ability to verify digital signatures.</li>
+  <li>Ability to run hashing algorithms.</li>
+  <li>Ability to perform authenticated encryption algorithms.</li>
+  <li>Ability to compute and compare hashes.</li>
+</ul>
+
+<h2 id="cryptographic-key-management">Cryptographic Key Management</h2>
+
+<p>Ability to manage cryptographic keys securely:</p>
+
+<ul>
+  <li>Ability to generate key pairs.</li>
+  <li>Ability to store encryption keys securely.</li>
+  <li>Ability to change keys securely.</li>
+</ul>
+
+<h2 id="secure-storage">Secure Storage</h2>
+
+<p>Ability for the IoT device, or tools used through the IoT device interface, to enable secure device storage. Elements that may be necessary:</p>
+
+<ul>
+  <li>Ability to support encryption of data at rest.
+    <ul>
+      <li>Ability to cryptographically store passwords at rest, as well as device identity and other authentication data.</li>
+      <li>Ability to support data encryption and signing to prevent data from being altered in device storage.</li>
+    </ul>
+  </li>
+  <li>Ability to secure data in device storage.
+    <ul>
+      <li>Ability to secure data stored locally on the device.</li>
+      <li>Ability to secure data stored in remote storage areas (e.g., cloud, server, etc.).</li>
+      <li>Ability to utilize separate storage partitions for system and user data.</li>
+    </ul>
+  </li>
+  <li>Ability to “sanitize” or “purge” specific or all data in the device.</li>
+</ul>
+
+<h2 id="secure-transmission">Secure Transmission</h2>
+
+<p>Ability to secure data transmissions sent to and from the IoT device. Elements that may be necessary:</p>
+
+<ul>
+  <li>Ability to configure the cryptographic algorithm to protect data in transit.
+    <ul>
+      <li>Ability to support trusted data exchange with a specified minimum strength cryptography algorithm.</li>
+      <li>Ability to support data encryption and signing to prevent data from being altered in transit.</li>
+    </ul>
+  </li>
+  <li>Ability to utilize one or more capabilities to protect the data it transmits from unauthorized access and modification.</li>
+  <li>Ability to use cryptographic means to validate the integrity of data transmitted.</li>
+</ul>
+
+
+	  </div>
+	</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a42c27b3cd5844ce',t:'MTc5MDY5NzE0Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="nist-footer-bottom">
+<link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/toggle.css">
+	
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+      <script src="https://pages.nist.gov/nist-header-footer/js/jquery-1.9.0.min.js" type="text/javascript" defer="defer"></script>
+      <script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js" type="text/javascript" defer="defer"></script>
+
+<header class="nist-header--minimal">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="/">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+
+     <!-- Google Analytics -->
+    <!--<script type="text/javascript" id="_fed_an_js_tag" src="http://www.nist.gov/js/federated-analytics.all.min.js?agency=NIST&subagency=mml&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script> -->
+    <!-- DAP Analytics -->
+    <script type="text/javascript" id="_fed_an_ua_tag"
+            src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOC&subagency=NIST&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c">
+    </script>
+      
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/NISTStyle.css">
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/NISTPages.css">
+    <link rel="stylesheet" href="/IoT-Device-Cybersecurity-Requirement-Catalogs/static/css/navbar-links.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</header>
+
+<div id="navbar-links" style="position:absolute;top:4px;left:12.5%;" class="nist-links">
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://www.nist.gov/programs-projects/nist-cybersecurity-iot-program">NIST Cybersecurity for IoT Program</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="http://www.nist.gov/public_affairs/nandyou.cfm">About NIST</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov">usnistgov on GitHub</a>
+      <a style="white-space:nowrap;" class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov/IoT-Device-Cybersecurity-Requirement-Catalogs">IoT Catalogs on GitHub</a>
+    </div>
+
+	
+<div style="z-index:1;position:absolute;top:10px;right:1%;width:17.5%;">
+<input style="width:100%" type="text" id="search-input" placeholder="Search ...">
+<ul style="width:100%;background-color:#f8f8f8;border-style:solid;border-color:black;border-width:thin;" id="results-container"></ul>
+</div>
+<script src="https://unpkg.com/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js" type="text/javascript"></script>
+<script src="//unpkg.com/string-similarity/umd/string-similarity.min.js"></script>
+    <script type="text/javascript">
+
+            SimpleJekyllSearch({
+                searchInput: document.getElementById('search-input'),
+                resultsContainer: document.getElementById('results-container'),
+                json: '/IoT-Device-Cybersecurity-Requirement-Catalogs/search.json',
+                searchResultTemplate: '<li style="list-style:square;"><a style="font-size:16px;font-weight:bold;color:#0B3C5D" href="{url}" title="Search configuration">{title}</a></li>',
+                sortMiddleware: function(a, b) {
+
+                  var input = String(document.getElementById("search-input").value).toLowerCase();
+
+                  var astr = String(a.title) + ' ' + String(a.content);
+                  var bstr = String(b.title) + ' ' + String(b.content);
+
+                  astr.toLowerCase();
+                  bstr.toLowerCase();
+
+                  var freqOne = astr.split(input).length - 1;
+                  var freqTwo = bstr.split(input).length - 1;
+
+		  var compOne = stringSimilarity.compareTwoStrings(input, astr);
+                  var compTwo = stringSimilarity.compareTwoStrings(input, bstr);
+
+		  if(freqOne === freqTwo){
+                     return (compOne > compTwo ? -1 : 1);
+                  }
+                  else { 
+                     return (freqOne > freqTwo ? -1 : 1);
+                  }
+
+                },
+                noResultsText: 'No results found.',
+                limit: 8
+            })
+    </script>
+    <!--end search-->
+<nav style="top:50px;width:12.5%;height:100%" class="navbar navbar-default navbar-fixed-left" role="navigation">
+	<ul class="nav navbar-nav">
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="active">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/">Introduction</a>
+          
+          
+          
+        
+            
+            
+
+            
+
+            <ul class="subnav">
+            
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/background/">Background</a></li>
+              
+            
+              
+              	
+              	
+              
+              	<li style="padding-bottom:10px; font-size:15px;" class=""><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/feedback/">Feedback</a></li>
+              
+            
+          
+            </ul>
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/">Technical Capabilities</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/nontechnical/">Non-Technical Capabilities</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/informative_references/">NIST Informative References</a>
+          
+          
+          
+          
+          
+        </li>
+      
+        
+        
+        
+        <li style="font-size:18px; width:95%;" class="">
+          
+              <a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/FAQs/">FAQs</a>
+          
+          
+          
+          
+          
+        </li>
+      
+      
+      
+  </ul>
+
+</nav>
+
+<body>
+	<div class="container">
+	  <div class="row">
+		<h1 id="nists-iot-cybersecurity-capabilities-catalog">NIST’s IoT Cybersecurity Capabilities Catalog</h1>
+
+<p>This site contains the catalog of IoT device technical cybersecurity capabilities and supporting non-technical manufacturer capabilities developed by NIST’s <a href="https://www.nist.gov/programs-projects/nist-cybersecurity-iot-program"><strong>Cybersecurity for the Internet of Things (IoT)</strong> program</a>.  The capabilities listed below can also be accessed under the <a href="https://pages.nist.gov/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/">Technical Capabilities</a> and <a href="https://pages.nist.gov/IoT-Device-Cybersecurity-Requirement-Catalogs/nontechnical/">Non-Technical Capabilities</a> headings in the sidebar (which also provide more information about the types of capabilities).</p>
+
+<p>The catalog contains more granular capability statements that refine and add specificity to the high-level IoT cybersecurity capabilities defined in NISTIRs <a href="https://doi.org/10.6028/NIST.IR.8259A">8259A</a> and <a href="https://csrc.nist.gov/publications/detail/nistir/8259b/draft">8259B</a>. NISTIRs 8259A/B contain core baselines of capabilities that are broadly applicable, and are complemented by the federal profile described in NISTIR <a href="https://csrc.nist.gov/publications/detail/nistir/8259d/draft">8259D</a> and the guidance for federal agencies defining their IoT cybersecurity requirements in <a href="https://csrc.nist.gov/publications/detail/sp/800-213/draft">SP 800-213</a>. More information about all of these documents and their relationships is provided in the program’s <a href="https://www.nist.gov/blogs/cybersecurity-insights/rounding-your-iot-security-requirements-draft-nist-guidance-federal">December 2020 blog post</a>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Device Technical<br />Cybersecurity Capabilities</th>
+      <th>Manufacturer Non-Technical<br />Supporting Capabilities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/identity/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Device_Identification.png" width="30px" /> Device Identification</a></td>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/nontechnical/manufacturer/documentation/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Documentation.png" width="30px" /> Documentation</a></td>
+    </tr>
+    <tr>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/configuration/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Device_Configuration.png" width="30px" /> Device Configuration</a></td>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/nontechnical/manufacturer/query/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Information_Querry.png" width="30px" /> Information &amp; Query Reception</a></td>
+    </tr>
+    <tr>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/protection/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Data_Protection.png" width="30px" /> Data Protection</a></td>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/nontechnical/manufacturer/information/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Information_Dissemination.png" width="30px" /> Information Dissemination</a></td>
+    </tr>
+    <tr>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/logical/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Access_to_Interfaces.png" width="30px" /> Logical Access to Interfaces</a></td>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/nontechnical/manufacturer/education/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Education_Awareness.png" width="30px" /> Education and Awareness</a></td>
+    </tr>
+    <tr>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/update/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Software_Update.png" width="30px" /> Software Update</a></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/state/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Cybersecurity_Awareness.png" width="30px" /> Cybersecurity State Awareness</a></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="/IoT-Device-Cybersecurity-Requirement-Catalogs/technical/security/"><img src="/IoT-Device-Cybersecurity-Requirement-Catalogs/Frontmatter/images/Device_Configuration.png" width="30px" /> Device Security</a></td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For background information about the creation and intended use of this catalog see the <a href="catalog.md">catalog information page</a>.</p>
+
+	  </div>
+	</div>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a42ba525485fdf09',t:'MTc5MDY5MTc5OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
